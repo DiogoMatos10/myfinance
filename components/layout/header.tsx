@@ -27,6 +27,9 @@ export function Header({ user, onLogout }: HeaderProps) {
           </h1>
         </div>
         <div className="flex items-center gap-3">
+          <span className="text-sm text-gray-600">
+            {t('header.greeting', { name: displayName })}
+          </span>
           <Button
             variant="outline"
             size="sm"
@@ -35,9 +38,6 @@ export function Header({ user, onLogout }: HeaderProps) {
           >
             {locale === 'pt-PT' ? 'PT' : 'EN'}
           </Button>
-          <span className="text-sm text-gray-600">
-            {t('header.greeting', { name: displayName })}
-          </span>
           <Button variant="outline" size="sm" onClick={onLogout}>
             {t('header.signOut')}
           </Button>

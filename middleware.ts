@@ -5,6 +5,16 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const session = request.cookies.get('session')?.value;
 
+  const isPublicAsset =
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/icons') ||
+    pathname.includes('.') ||
+    pathname === '/favicon.ico';
+
+  if (isPublicAsset) {
+    return NextResponse.next();
+  }
+
   const publicRoutes = ['/login', '/register', '/reset-password'];
 
   if (!session && !publicRoutes.includes(pathname)) {
