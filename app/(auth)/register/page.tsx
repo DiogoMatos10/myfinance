@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerUser, loginWithGoogle } from '@/lib/firebase/auth';
-import { registerSchema, RegisterInput } from '@/lib/validations/auth';
+import { createRegisterSchema, RegisterInput } from '@/lib/validations/auth';
+import { useI18n } from '@/components/providers/i18n-provider';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,15 +22,18 @@ import {
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { t } = useI18n();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const schema = useMemo(() => createRegisterSchema(t), [t]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterInput>({
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(schema),
   });
 
   const onSubmit = async (data: RegisterInput) => {
@@ -40,8 +44,7 @@ export default function RegisterPage() {
       await registerUser(data.email, data.password, data.displayName);
       router.push('/');
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'Error creating account';
+      const message = err instanceof Error ? err.message : t('errors.register');
       setError(message);
     } finally {
       setIsLoading(false);
@@ -57,7 +60,7 @@ export default function RegisterPage() {
       router.push('/');
     } catch (err: unknown) {
       const message =
-        err instanceof Error ? err.message : 'Error logging in with Google';
+        err instanceof Error ? err.message : t('errors.loginGoogle');
       setError(message);
     } finally {
       setIsLoading(false);
@@ -69,10 +72,10 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">
-            Create Account
+            {t('auth.registerTitle')}
           </CardTitle>
           <CardDescription className="text-center">
-            Fill in the details below to get started
+            {t('auth.registerSubtitle')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -84,11 +87,11 @@ export default function RegisterPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="displayName">Full Name</Label>
+              <Label htmlFor="displayName">{t('auth.fullNameLabel')}</Label>
               <Input
                 id="displayName"
                 type="text"
-                placeholder="John Doe"
+                placeholder={t('auth.fullNamePlaceholder')}
                 {...register('displayName')}
                 disabled={isLoading}
               />
@@ -100,11 +103,11 @@ export default function RegisterPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('auth.emailLabel')}</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="you@email.com"
+                placeholder={t('auth.emailPlaceholder')}
                 {...register('email')}
                 disabled={isLoading}
               />
@@ -114,11 +117,11 @@ export default function RegisterPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('auth.passwordLabel')}</Label>
               <Input
                 id="password"
                 type="password"
-                placeholder="••••••••"
+                placeholder={t('auth.passwordPlaceholder')}
                 {...register('password')}
                 disabled={isLoading}
               />
@@ -130,11 +133,13 @@ export default function RegisterPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Label htmlFor="confirmPassword">
+                {t('auth.confirmPasswordLabel')}
+              </Label>
               <Input
                 id="confirmPassword"
                 type="password"
-                placeholder="••••••••"
+                placeholder={t('auth.passwordPlaceholder')}
                 {...register('confirmPassword')}
                 disabled={isLoading}
               />
@@ -146,7 +151,9 @@ export default function RegisterPage() {
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Creating account...' : 'Create Account'}
+              {isLoading
+                ? t('auth.creatingAccount')
+                : t('auth.createAccountButton')}
             </Button>
           </form>
 
@@ -155,7 +162,9 @@ export default function RegisterPage() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-gray-500">Or</span>
+              <span className="bg-white px-2 text-gray-500">
+                {t('common.or')}
+              </span>
             </div>
           </div>
 
@@ -184,17 +193,17 @@ export default function RegisterPage() {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            Continue with Google
+            {t('auth.continueWithGoogle')}
           </Button>
         </CardContent>
         <CardFooter className="flex justify-center">
           <p className="text-sm text-gray-600">
-            Already have an account?{' '}
+            {t('auth.alreadyHaveAccount')}{' '}
             <Link
               href="/login"
               className="font-medium text-primary hover:underline"
             >
-              Sign in
+              {t('auth.signInLink')}
             </Link>
           </p>
         </CardFooter>

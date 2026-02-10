@@ -78,6 +78,55 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* Theme presets: apply with className (e.g. `theme-emerald`) */
+.theme-default {
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --ring: oklch(0.708 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+}
+
+.theme-emerald {
+  --primary: oklch(0.6 0.15 162.48);
+  --primary-foreground: oklch(0.98 0 0);
+  --accent: oklch(0.93 0.06 162.48);
+  --accent-foreground: oklch(0.2 0.05 162.48);
+  --ring: oklch(0.6 0.15 162.48 / 70%);
+  --sidebar-primary: oklch(0.6 0.15 162.48);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.93 0.06 162.48);
+  --sidebar-accent-foreground: oklch(0.2 0.05 162.48);
+}
+
+.theme-ocean {
+  --primary: oklch(0.55 0.14 233.46);
+  --primary-foreground: oklch(0.98 0 0);
+  --accent: oklch(0.93 0.05 233.46);
+  --accent-foreground: oklch(0.2 0.06 233.46);
+  --ring: oklch(0.55 0.14 233.46 / 70%);
+  --sidebar-primary: oklch(0.55 0.14 233.46);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.93 0.05 233.46);
+  --sidebar-accent-foreground: oklch(0.2 0.06 233.46);
+}
+
+.theme-sunset {
+  --primary: oklch(0.65 0.2 37.5);
+  --primary-foreground: oklch(0.99 0 0);
+  --accent: oklch(0.94 0.08 37.5);
+  --accent-foreground: oklch(0.25 0.08 37.5);
+  --ring: oklch(0.65 0.2 37.5 / 70%);
+  --sidebar-primary: oklch(0.65 0.2 37.5);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.94 0.08 37.5);
+  --sidebar-accent-foreground: oklch(0.25 0.08 37.5);
+}
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);

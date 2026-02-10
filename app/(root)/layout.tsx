@@ -3,7 +3,8 @@
 import { useRequireAuth } from '@/lib/hooks/use-require-auth';
 import { logoutUser } from '@/lib/firebase/auth';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import { useI18n } from '@/components/providers/i18n-provider';
+import { Header } from '@/components/layout/header';
 
 export default function DashboardLayout({
   children,
@@ -12,13 +13,14 @@ export default function DashboardLayout({
 }) {
   const { user, loading } = useRequireAuth();
   const router = useRouter();
+  const { t } = useI18n();
 
   const handleLogout = async () => {
     try {
       await logoutUser();
       router.push('/login');
     } catch (error) {
-      console.error('Error logging out:', error);
+      console.error(t('errors.logout'), error);
     }
   };
 
@@ -27,7 +29,7 @@ export default function DashboardLayout({
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
           <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-600">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -39,24 +41,7 @@ export default function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">myFinance</h1>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">
-                Hi, {user.displayName || user.email}!
-              </span>
-              <Button variant="outline" size="sm" onClick={handleLogout}>
-                Sign out
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header user={user} onLogout={handleLogout} />
 
       {/* Main Content */}
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">

@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/components/providers/auth-provider';
+import { useI18n } from '@/components/providers/i18n-provider';
 import {
   Card,
   CardContent,
@@ -11,22 +12,25 @@ import {
 
 export default function DashboardPage() {
   const { user, userData } = useAuth();
+  const { t } = useI18n();
+  const displayName = userData?.displayName || user?.displayName;
+  const name = displayName || t('common.userFallback');
 
   return (
     <div className="space-y-8">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">
-          Hi, {userData?.displayName || user?.displayName}! 👋
+          {t('dashboard.greeting', { name })}
         </h2>
-        <p className="text-gray-600 mt-2">
-          Welcome to your financial dashboard
-        </p>
+        <p className="text-gray-600 mt-2">{t('dashboard.welcome')}</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Balance</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t('dashboard.totalBalance')}
+            </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -43,14 +47,16 @@ export default function DashboardPage() {
           <CardContent>
             <div className="text-2xl font-bold">€0,00</div>
             <p className="text-xs text-muted-foreground">
-              +0% compared to last month
+              {t('dashboard.comparedLastMonth')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Income</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t('dashboard.income')}
+            </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -68,13 +74,17 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">€0,00</div>
-            <p className="text-xs text-muted-foreground">This month</p>
+            <p className="text-xs text-muted-foreground">
+              {t('dashboard.thisMonth')}
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Expenses</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t('dashboard.expenses')}
+            </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -91,13 +101,17 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">€0,00</div>
-            <p className="text-xs text-muted-foreground">This month</p>
+            <p className="text-xs text-muted-foreground">
+              {t('dashboard.thisMonth')}
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Savings Rate</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t('dashboard.savingsRate')}
+            </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -113,17 +127,17 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">0%</div>
-            <p className="text-xs text-muted-foreground">Goal: 20%</p>
+            <p className="text-xs text-muted-foreground">
+              {t('dashboard.savingsGoal')}
+            </p>
           </CardContent>
         </Card>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Next Steps</CardTitle>
-          <CardDescription>
-            Complete these tasks to start using myFinance
-          </CardDescription>
+          <CardTitle>{t('dashboard.nextSteps')}</CardTitle>
+          <CardDescription>{t('dashboard.nextStepsSubtitle')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center gap-4">
@@ -131,9 +145,9 @@ export default function DashboardPage() {
               <span className="text-lg font-semibold text-primary">1</span>
             </div>
             <div>
-              <p className="font-medium">Add your first transaction</p>
+              <p className="font-medium">{t('dashboard.task1Title')}</p>
               <p className="text-sm text-gray-600">
-                Start by recording an income or expense
+                {t('dashboard.task1Description')}
               </p>
             </div>
           </div>
@@ -142,9 +156,9 @@ export default function DashboardPage() {
               <span className="text-lg font-semibold text-gray-600">2</span>
             </div>
             <div>
-              <p className="font-medium">Set up your categories</p>
+              <p className="font-medium">{t('dashboard.task2Title')}</p>
               <p className="text-sm text-gray-600">
-                Customize categories to fit your needs
+                {t('dashboard.task2Description')}
               </p>
             </div>
           </div>
@@ -153,9 +167,9 @@ export default function DashboardPage() {
               <span className="text-lg font-semibold text-gray-600">3</span>
             </div>
             <div>
-              <p className="font-medium">Set your monthly budget</p>
+              <p className="font-medium">{t('dashboard.task3Title')}</p>
               <p className="text-sm text-gray-600">
-                Set spending limits for each category
+                {t('dashboard.task3Description')}
               </p>
             </div>
           </div>
