@@ -1,0 +1,168 @@
+'use client';
+
+import { useAuth } from '@/components/providers/auth-provider';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+
+export default function DashboardPage() {
+  const { user, userData } = useAuth();
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-3xl font-bold tracking-tight">
+          Olá, {userData?.displayName || user?.displayName}! 👋
+        </h2>
+        <p className="text-gray-600 mt-2">
+          Bem-vindo ao seu painel de controle financeiro
+        </p>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Saldo Total</CardTitle>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="h-4 w-4 text-muted-foreground"
+            >
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">€0,00</div>
+            <p className="text-xs text-muted-foreground">
+              +0% em relação ao mês anterior
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Receitas</CardTitle>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="h-4 w-4 text-muted-foreground"
+            >
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">€0,00</div>
+            <p className="text-xs text-muted-foreground">Este mês</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Despesas</CardTitle>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="h-4 w-4 text-muted-foreground"
+            >
+              <rect width="20" height="14" x="2" y="5" rx="2" />
+              <path d="M2 10h20" />
+            </svg>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">€0,00</div>
+            <p className="text-xs text-muted-foreground">Este mês</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Taxa de Poupança
+            </CardTitle>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="h-4 w-4 text-muted-foreground"
+            >
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+            </svg>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">0%</div>
+            <p className="text-xs text-muted-foreground">Meta: 20%</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Próximos Passos</CardTitle>
+          <CardDescription>
+            Complete estas tarefas para começar a usar o myFinance
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center gap-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+              <span className="text-lg font-semibold text-primary">1</span>
+            </div>
+            <div>
+              <p className="font-medium">Adicione sua primeira transação</p>
+              <p className="text-sm text-gray-600">
+                Comece registrando uma receita ou despesa
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
+              <span className="text-lg font-semibold text-gray-600">2</span>
+            </div>
+            <div>
+              <p className="font-medium">Configure suas categorias</p>
+              <p className="text-sm text-gray-600">
+                Personalize as categorias de acordo com suas necessidades
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
+              <span className="text-lg font-semibold text-gray-600">3</span>
+            </div>
+            <div>
+              <p className="font-medium">Defina seu orçamento mensal</p>
+              <p className="text-sm text-gray-600">
+                Estabeleça limites de gastos para cada categoria
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
