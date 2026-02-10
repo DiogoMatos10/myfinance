@@ -44,8 +44,6 @@ let db: Firestore | null = null;
 let initError: Error | null = null;
 let initialized = false;
 
-const isBrowser = typeof window !== 'undefined';
-
 const buildMissingKeyMessage = (keys: Array<{ env: string }>) =>
   `Firebase config is missing required environment variables: ${keys
     .map(key => key.env)
@@ -55,7 +53,7 @@ const getMissingKeys = (config: FirebaseEnvConfig) =>
   requiredKeys.filter(({ key }) => !config[key]);
 
 const ensureInitialized = () => {
-  if (!isBrowser || initialized || initError) {
+  if (initialized || initError) {
     return;
   }
 

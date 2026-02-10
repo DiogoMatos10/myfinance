@@ -2,6 +2,7 @@
 
 import { useAuth } from '@/components/providers/auth-provider';
 import { useI18n } from '@/components/providers/i18n-provider';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -9,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import Link from 'next/link';
 
 export default function DashboardPage() {
   const { user, userData } = useAuth();
@@ -23,6 +25,14 @@ export default function DashboardPage() {
           {t('dashboard.greeting', { name })}
         </h2>
         <p className="text-gray-600 mt-2">{t('dashboard.welcome')}</p>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Button asChild>
+            <Link href="/transactions">{t('finance.goToTransactions')}</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/settings">{t('dashboard.goToSettings')}</Link>
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

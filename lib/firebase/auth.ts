@@ -24,6 +24,7 @@ export interface UserData {
   displayName: string;
   photoURL?: string;
   defaultCurrency: string;
+  initialBalance?: number;
   preferences: {
     theme: 'light' | 'dark' | 'system';
     dateFormat: string;

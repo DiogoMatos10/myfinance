@@ -17,6 +17,8 @@ myFinance is a personal finance management web application built with Next.js (A
 - Localized UI (EN and PT‑PT) with a language switch in the header.
 - Theme color presets via CSS variables and class-based overrides.
 - Dashboard widgets and guidance cards to onboard new users.
+- Finance workspace with initial balance, categories, and transaction forms.
+- Summary charts (income vs expenses, expenses by category) and transaction table.
 
 ## Project Structure
 
@@ -27,4 +29,4 @@ myFinance is a personal finance management web application built with Next.js (A
 
 ## Usage Notes
 
-The UI text is translated through the i18n provider, and colors can be swapped by applying a theme class (e.g. `theme-emerald`) at any container level.
+The UI text is translated through the i18n provider, and colors can be swapped by applying a theme class (e.g. `theme-emerald`) at any container level. Transaction data is stored per user under Firestore collections (users/{uid}/transactions and users/{uid}/categories).
