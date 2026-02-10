@@ -11,9 +11,6 @@ interface HeaderProps {
 
 export function Header({ user, onLogout }: HeaderProps) {
   const { locale, setLocale, t } = useI18n();
-  const displayName =
-    user?.displayName || user?.email || t('common.userFallback');
-
   const toggleLocale = () => {
     setLocale(locale === 'pt-PT' ? 'en' : 'pt-PT');
   };
@@ -27,9 +24,6 @@ export function Header({ user, onLogout }: HeaderProps) {
           </h1>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-sm text-gray-600">
-            {t('header.greeting', { name: displayName })}
-          </span>
           <Button
             variant="outline"
             size="sm"

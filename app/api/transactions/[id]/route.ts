@@ -9,6 +9,7 @@ import {
 } from 'firebase/firestore';
 import { getFirestoreDb } from '@/lib/firebase/config';
 import { formatZodError } from '@/lib/validations/zod';
+import { logApiRequest, logApiResponse, logWarn } from '@/lib/server-logger';
 
 const updateSchema = z.object({
   userId: z.string().min(1),
@@ -22,21 +23,40 @@ const updateSchema = z.object({
 });
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const startedAt = Date.now();
   const { id } = await params;
-  return NextResponse.json({ id, message: 'Use /api/transactions?userId=' });
+  logApiRequest(request, {
+    route: 'GET /api/transactions/[id]',
+    params: { id },
+  });
+  const response = NextResponse.json({
+    id,
+    message: 'Use /api/transactions?userId=',
+  });
+  logApiResponse(request, response.status, startedAt);
+  return response;
 }
 
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const startedAt = Date.now();
   const body = await request.json().catch(() => null);
+  logApiRequest(request, {
+    route: 'PUT /api/transactions/[id]',
+    body,
+  });
   const parsed = updateSchema.safeParse(body);
 
   if (!parsed.success) {
+    logWarn('api.validation', {
+      route: 'PUT /api/transactions/[id]',
+      issues: parsed.error.issues,
+    });
     return NextResponse.json(formatZodError(parsed.error), { status: 400 });
   }
 
@@ -44,15 +64,26 @@ export async function PUT(
   const { id } = await params;
   const ref = doc(getFirestoreDb(), 'users', userId, 'transactions', id);
   await updateDoc(ref, { ...payload, updatedAt: serverTimestamp() });
-  return NextResponse.json({ id, ...payload });
+  const response = NextResponse.json({ id, ...payload });
+  logApiResponse(request, response.status, startedAt);
+  return response;
 }
 
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const startedAt = Date.now();
   const userId = request.nextUrl.searchParams.get('userId');
+  logApiRequest(request, {
+    route: 'DELETE /api/transactions/[id]',
+    params: { userId: userId || undefined },
+  });
   if (!userId) {
+    logWarn('api.validation', {
+      route: 'DELETE /api/transactions/[id]',
+      reason: 'missing_userId',
+    });
     return NextResponse.json(
       { message: 'userId is required' },
       { status: 400 }
@@ -63,8 +94,14 @@ export async function DELETE(
   const ref = doc(getFirestoreDb(), 'users', userId, 'transactions', id);
   const snapshot = await getDoc(ref);
   if (!snapshot.exists()) {
+    logWarn('api.not_found', {
+      route: 'DELETE /api/transactions/[id]',
+      id,
+    });
     return NextResponse.json({ message: 'Not found' }, { status: 404 });
   }
   await deleteDoc(ref);
-  return NextResponse.json({ ok: true });
+  const response = NextResponse.json({ ok: true });
+  logApiResponse(request, response.status, startedAt);
+  return response;
 }

@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/build-log.mjs && next build",
     "start": "next start",
     "lint": "eslint",
     "lint:fix": "next lint --fix",

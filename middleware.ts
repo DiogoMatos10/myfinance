@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { logMiddlewareRequest } from '@/lib/server-logger';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -18,12 +19,31 @@ export function middleware(request: NextRequest) {
   const publicRoutes = ['/login', '/register', '/reset-password'];
 
   if (!session && !publicRoutes.includes(pathname)) {
+    logMiddlewareRequest({
+      path: pathname,
+      hasSession: false,
+      isPublicRoute: false,
+      action: 'redirect:login',
+    });
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
   if (session && publicRoutes.includes(pathname)) {
+    logMiddlewareRequest({
+      path: pathname,
+      hasSession: true,
+      isPublicRoute: true,
+      action: 'redirect:home',
+    });
     return NextResponse.redirect(new URL('/', request.url));
   }
+
+  logMiddlewareRequest({
+    path: pathname,
+    hasSession: Boolean(session),
+    isPublicRoute: publicRoutes.includes(pathname),
+    action: 'allow',
+  });
 
   return NextResponse.next();
 }
