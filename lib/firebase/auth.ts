@@ -15,7 +15,7 @@ import {
   serverTimestamp,
   FieldValue,
 } from 'firebase/firestore';
-import { auth, db } from './config';
+import { FirebaseConfigError, getFirebaseAuth, getFirestoreDb } from './config';
 import { getIdToken } from 'firebase/auth';
 
 export interface UserData {
@@ -39,7 +39,9 @@ export const registerUser = async (
   displayName: string
 ): Promise<User> => {
   try {
-    // Criar usuário no Firebase Auth
+    const auth = getFirebaseAuth();
+    const db = getFirestoreDb();
+    // Create user in Firebase Auth
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -68,6 +70,9 @@ export const registerUser = async (
     return user;
   } catch (error: unknown) {
     console.error('Error registering user:', error);
+    if (error instanceof FirebaseConfigError) {
+      throw new Error(error.message);
+    }
     const code = getErrorCode(error);
     throw new Error(getAuthErrorMessage(code));
   }
@@ -78,6 +83,7 @@ export const loginUser = async (
   password: string
 ): Promise<User> => {
   try {
+    const auth = getFirebaseAuth();
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
@@ -95,6 +101,9 @@ export const loginUser = async (
     return user;
   } catch (error: unknown) {
     console.error('Error logging in:', error);
+    if (error instanceof FirebaseConfigError) {
+      throw new Error(error.message);
+    }
     const code = getErrorCode(error);
     throw new Error(getAuthErrorMessage(code));
   }
@@ -102,6 +111,8 @@ export const loginUser = async (
 
 export const loginWithGoogle = async (): Promise<User> => {
   try {
+    const auth = getFirebaseAuth();
+    const db = getFirestoreDb();
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
     const userCredential = await signInWithPopup(auth, provider);
@@ -137,6 +148,9 @@ export const loginWithGoogle = async (): Promise<User> => {
     return user;
   } catch (error: unknown) {
     console.error('Error logging in with Google:', error);
+    if (error instanceof FirebaseConfigError) {
+      throw new Error(error.message);
+    }
     const code = getErrorCode(error);
     throw new Error(getAuthErrorMessage(code));
   }
@@ -144,19 +158,27 @@ export const loginWithGoogle = async (): Promise<User> => {
 
 export const logoutUser = async (): Promise<void> => {
   try {
+    const auth = getFirebaseAuth();
     await signOut(auth);
     await fetch('/api/auth/session', { method: 'DELETE' });
   } catch (error) {
     console.error('Error logging out:', error);
-    throw new Error('Erro ao fazer logout');
+    if (error instanceof FirebaseConfigError) {
+      throw new Error(error.message);
+    }
+    throw new Error('Error logging out');
   }
 };
 
 export const resetPassword = async (email: string): Promise<void> => {
   try {
+    const auth = getFirebaseAuth();
     await sendPasswordResetEmail(auth, email);
   } catch (error: unknown) {
     console.error('Error resetting password:', error);
+    if (error instanceof FirebaseConfigError) {
+      throw new Error(error.message);
+    }
     const code = getErrorCode(error);
     throw new Error(getAuthErrorMessage(code));
   }
@@ -164,6 +186,7 @@ export const resetPassword = async (email: string): Promise<void> => {
 
 export const getUserData = async (uid: string): Promise<UserData | null> => {
   try {
+    const db = getFirestoreDb();
     const userDoc = await getDoc(doc(db, 'users', uid));
     if (userDoc.exists()) {
       return userDoc.data() as UserData;
@@ -178,27 +201,27 @@ export const getUserData = async (uid: string): Promise<UserData | null> => {
 function getAuthErrorMessage(errorCode: string): string {
   switch (errorCode) {
     case 'auth/email-already-in-use':
-      return 'Este email já está em uso';
+      return 'This email is already in use';
     case 'auth/invalid-email':
-      return 'Email inválido';
+      return 'Invalid email';
     case 'auth/operation-not-allowed':
-      return 'Operação não permitida';
+      return 'Operation not allowed';
     case 'auth/weak-password':
-      return 'Senha muito fraca. Use pelo menos 6 caracteres';
+      return 'Password too weak. Use at least 6 characters';
     case 'auth/user-disabled':
-      return 'Esta conta foi desativada';
+      return 'This account has been disabled';
     case 'auth/user-not-found':
-      return 'Usuário não encontrado';
+      return 'User not found';
     case 'auth/wrong-password':
-      return 'Email ou senha incorretos';
+      return 'Incorrect email or password';
     case 'auth/invalid-credential':
-      return 'Credenciais inválidas';
+      return 'Invalid credentials';
     case 'auth/too-many-requests':
-      return 'Muitas tentativas. Tente novamente mais tarde';
+      return 'Too many attempts. Try again later';
     case 'auth/popup-closed-by-user':
-      return 'Popup fechado antes de completar o login';
+      return 'Popup closed before completing login';
     default:
-      return 'Erro ao autenticar. Tente novamente';
+      return 'Authentication error. Try again';
   }
 }
 

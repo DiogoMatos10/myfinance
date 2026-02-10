@@ -41,7 +41,7 @@ export default function RegisterPage() {
       router.push('/');
     } catch (err: unknown) {
       const message =
-        err instanceof Error ? err.message : 'Erro ao criar conta';
+        err instanceof Error ? err.message : 'Error creating account';
       setError(message);
     } finally {
       setIsLoading(false);
@@ -57,7 +57,7 @@ export default function RegisterPage() {
       router.push('/');
     } catch (err: unknown) {
       const message =
-        err instanceof Error ? err.message : 'Erro ao fazer login com Google';
+        err instanceof Error ? err.message : 'Error logging in with Google';
       setError(message);
     } finally {
       setIsLoading(false);
@@ -69,10 +69,10 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">
-            Criar Conta
+            Create Account
           </CardTitle>
           <CardDescription className="text-center">
-            Preencha os dados abaixo para começar
+            Fill in the details below to get started
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -84,11 +84,11 @@ export default function RegisterPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="displayName">Nome Completo</Label>
+              <Label htmlFor="displayName">Full Name</Label>
               <Input
                 id="displayName"
                 type="text"
-                placeholder="João Silva"
+                placeholder="John Doe"
                 {...register('displayName')}
                 disabled={isLoading}
               />
@@ -104,7 +104,7 @@ export default function RegisterPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="seu@email.com"
+                placeholder="you@email.com"
                 {...register('email')}
                 disabled={isLoading}
               />
@@ -114,7 +114,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Senha</Label>
+              <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -130,7 +130,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirmar Senha</Label>
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
               <Input
                 id="confirmPassword"
                 type="password"
@@ -146,7 +146,7 @@ export default function RegisterPage() {
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Criando conta...' : 'Criar Conta'}
+              {isLoading ? 'Creating account...' : 'Create Account'}
             </Button>
           </form>
 
@@ -155,7 +155,7 @@ export default function RegisterPage() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-gray-500">Ou</span>
+              <span className="bg-white px-2 text-gray-500">Or</span>
             </div>
           </div>
 
@@ -184,17 +184,17 @@ export default function RegisterPage() {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            Continuar com Google
+            Continue with Google
           </Button>
         </CardContent>
         <CardFooter className="flex justify-center">
           <p className="text-sm text-gray-600">
-            Já tem uma conta?{' '}
+            Already have an account?{' '}
             <Link
               href="/login"
               className="font-medium text-primary hover:underline"
             >
-              Faça login
+              Sign in
             </Link>
           </p>
         </CardFooter>

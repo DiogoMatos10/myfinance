@@ -1,8 +1,8 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/lib/firebase/config';
+import { User, onAuthStateChanged, Unsubscribe } from 'firebase/auth';
+import { getFirebaseAuth } from '@/lib/firebase/config';
 import { getUserData, UserData } from '@/lib/firebase/auth';
 
 interface AuthContextType {
@@ -31,20 +31,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async currentUser => {
-      setUser(currentUser);
+    let unsubscribe: Unsubscribe | null = null;
 
-      if (currentUser) {
-        const data = await getUserData(currentUser.uid);
-        setUserData(data);
-      } else {
+    const startListener = async () => {
+      try {
+        const auth = getFirebaseAuth();
+        unsubscribe = onAuthStateChanged(auth, async currentUser => {
+          setUser(currentUser);
+
+          if (currentUser) {
+            const data = await getUserData(currentUser.uid);
+            setUserData(data);
+          } else {
+            setUserData(null);
+          }
+
+          setLoading(false);
+        });
+      } catch (error) {
+        console.error('Firebase auth initialization failed:', error);
+        setUser(null);
         setUserData(null);
+        setLoading(false);
       }
+    };
 
-      setLoading(false);
-    });
+    startListener();
 
-    return () => unsubscribe();
+    return () => unsubscribe?.();
   }, []);
 
   return (

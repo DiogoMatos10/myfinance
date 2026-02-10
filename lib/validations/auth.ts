@@ -1,35 +1,35 @@
 import { z } from 'zod';
 
-// Schema de Login
+// Login schema
 export const loginSchema = z.object({
-  email: z.string().min(1, 'Email é obrigatório').email('Email inválido'),
-  password: z.string().min(6, 'Senha deve ter pelo menos 6 caracteres'),
+  email: z.string().min(1, 'Email is required').email('Invalid email'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
 export const registerSchema = z
   .object({
     displayName: z
       .string()
-      .min(2, 'Nome deve ter pelo menos 2 caracteres')
-      .max(50, 'Nome deve ter no máximo 50 caracteres'),
-    email: z.string().min(1, 'Email é obrigatório').email('Email inválido'),
+      .min(2, 'Name must be at least 2 characters')
+      .max(50, 'Name must be at most 50 characters'),
+    email: z.string().min(1, 'Email is required').email('Invalid email'),
     password: z
       .string()
-      .min(6, 'Senha deve ter pelo menos 6 caracteres')
+      .min(6, 'Password must be at least 6 characters')
       .regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-        'Senha deve conter letras maiúsculas, minúsculas e números'
+        'Password must contain uppercase, lowercase, and numbers'
       ),
-    confirmPassword: z.string().min(1, 'Confirme sua senha'),
+    confirmPassword: z.string().min(1, 'Confirm your password'),
   })
   .refine(data => data.password === data.confirmPassword, {
-    message: 'As senhas não coincidem',
+    message: 'Passwords do not match',
     path: ['confirmPassword'],
   });
 
-// Schema de Reset de Senha
+// Password reset schema
 export const resetPasswordSchema = z.object({
-  email: z.string().min(1, 'Email é obrigatório').email('Email inválido'),
+  email: z.string().min(1, 'Email is required').email('Invalid email'),
 });
 
 export type LoginInput = z.infer<typeof loginSchema>;

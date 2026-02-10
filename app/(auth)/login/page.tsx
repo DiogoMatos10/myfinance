@@ -41,8 +41,7 @@ export default function LoginPage() {
       await loginUser(data.email, data.password);
       router.push('/');
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'Erro ao fazer login';
+      const message = err instanceof Error ? err.message : 'Error logging in';
       setError(message);
     } finally {
       setIsLoading(false);
@@ -58,7 +57,7 @@ export default function LoginPage() {
       router.push('/');
     } catch (err: unknown) {
       const message =
-        err instanceof Error ? err.message : 'Erro ao fazer login com Google';
+        err instanceof Error ? err.message : 'Error logging in with Google';
       setError(message);
     } finally {
       setIsLoading(false);
@@ -89,7 +88,7 @@ export default function LoginPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="seu@email.com"
+                placeholder="you@email.com"
                 {...register('email')}
                 disabled={isLoading}
               />

@@ -48,10 +48,10 @@ export default function DashboardLayout({
             </div>
             <div className="flex items-center gap-4">
               <span className="text-sm text-gray-600">
-                Olá, {user.displayName || user.email}!
+                Hi, {user.displayName || user.email}!
               </span>
               <Button variant="outline" size="sm" onClick={handleLogout}>
-                Sair
+                Sign out
               </Button>
             </div>
           </div>

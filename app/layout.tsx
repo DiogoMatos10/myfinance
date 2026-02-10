@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'myFinance',
-  description: 'Plataforma open-source para gestão financeira pessoal',
+  description: 'Open-source platform for personal finance management',
 };
 
 export default function RootLayout({

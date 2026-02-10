@@ -16,17 +16,17 @@ export default function DashboardPage() {
     <div className="space-y-8">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">
-          Olá, {userData?.displayName || user?.displayName}! 👋
+          Hi, {userData?.displayName || user?.displayName}! 👋
         </h2>
         <p className="text-gray-600 mt-2">
-          Bem-vindo ao seu painel de controle financeiro
+          Welcome to your financial dashboard
         </p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Saldo Total</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Balance</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -43,14 +43,14 @@ export default function DashboardPage() {
           <CardContent>
             <div className="text-2xl font-bold">€0,00</div>
             <p className="text-xs text-muted-foreground">
-              +0% em relação ao mês anterior
+              +0% compared to last month
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Receitas</CardTitle>
+            <CardTitle className="text-sm font-medium">Income</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -68,13 +68,13 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">€0,00</div>
-            <p className="text-xs text-muted-foreground">Este mês</p>
+            <p className="text-xs text-muted-foreground">This month</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Despesas</CardTitle>
+            <CardTitle className="text-sm font-medium">Expenses</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -91,15 +91,13 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">€0,00</div>
-            <p className="text-xs text-muted-foreground">Este mês</p>
+            <p className="text-xs text-muted-foreground">This month</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Taxa de Poupança
-            </CardTitle>
+            <CardTitle className="text-sm font-medium">Savings Rate</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -115,16 +113,16 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">0%</div>
-            <p className="text-xs text-muted-foreground">Meta: 20%</p>
+            <p className="text-xs text-muted-foreground">Goal: 20%</p>
           </CardContent>
         </Card>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Próximos Passos</CardTitle>
+          <CardTitle>Next Steps</CardTitle>
           <CardDescription>
-            Complete estas tarefas para começar a usar o myFinance
+            Complete these tasks to start using myFinance
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -133,9 +131,9 @@ export default function DashboardPage() {
               <span className="text-lg font-semibold text-primary">1</span>
             </div>
             <div>
-              <p className="font-medium">Adicione sua primeira transação</p>
+              <p className="font-medium">Add your first transaction</p>
               <p className="text-sm text-gray-600">
-                Comece registrando uma receita ou despesa
+                Start by recording an income or expense
               </p>
             </div>
           </div>
@@ -144,9 +142,9 @@ export default function DashboardPage() {
               <span className="text-lg font-semibold text-gray-600">2</span>
             </div>
             <div>
-              <p className="font-medium">Configure suas categorias</p>
+              <p className="font-medium">Set up your categories</p>
               <p className="text-sm text-gray-600">
-                Personalize as categorias de acordo com suas necessidades
+                Customize categories to fit your needs
               </p>
             </div>
           </div>
@@ -155,9 +153,9 @@ export default function DashboardPage() {
               <span className="text-lg font-semibold text-gray-600">3</span>
             </div>
             <div>
-              <p className="font-medium">Defina seu orçamento mensal</p>
+              <p className="font-medium">Set your monthly budget</p>
               <p className="text-sm text-gray-600">
-                Estabeleça limites de gastos para cada categoria
+                Set spending limits for each category
               </p>
             </div>
           </div>
