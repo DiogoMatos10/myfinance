@@ -23,15 +23,15 @@ const updateSchema = z.object({
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await params;
   return NextResponse.json({ id, message: 'Use /api/transactions?userId=' });
 }
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const body = await request.json().catch(() => null);
   const parsed = updateSchema.safeParse(body);
@@ -41,14 +41,15 @@ export async function PUT(
   }
 
   const { userId, ...payload } = parsed.data;
-  const ref = doc(getFirestoreDb(), 'users', userId, 'transactions', params.id);
+  const { id } = await params;
+  const ref = doc(getFirestoreDb(), 'users', userId, 'transactions', id);
   await updateDoc(ref, { ...payload, updatedAt: serverTimestamp() });
-  return NextResponse.json({ id: params.id, ...payload });
+  return NextResponse.json({ id, ...payload });
 }
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const userId = request.nextUrl.searchParams.get('userId');
   if (!userId) {
@@ -58,7 +59,8 @@ export async function DELETE(
     );
   }
 
-  const ref = doc(getFirestoreDb(), 'users', userId, 'transactions', params.id);
+  const { id } = await params;
+  const ref = doc(getFirestoreDb(), 'users', userId, 'transactions', id);
   const snapshot = await getDoc(ref);
   if (!snapshot.exists()) {
     return NextResponse.json({ message: 'Not found' }, { status: 404 });
